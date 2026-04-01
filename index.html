@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ResqCalc®</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ResqCalc®">
+
+        <link rel="apple-touch-icon" href="icon.png">
+
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #f2f2f7;
+            --card: #ffffff;
+            --text-main: #000000;
+            --text-muted: #6e6e73;
+            --primary: #007AFF;
+            --accent: #ff3b30;
+            --border: #d1d1d6;
+            --shadow-soft: 0 4px 12px rgba(0,0,0,0.08);
+            --safe-top: env(safe-area-inset-top);
+        }
+
+        .dark-mode {
+            --bg: #000000;
+            --surface: #1c1c1e;
+            --card: #2c2c2e;
+            --text-main: #ffffff;
+            --text-muted: #a1a1a6;
+            --primary: #0A84FF;
+            --border: #38383a;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding-top: var(--safe-top);
+            padding-bottom: 40px;
+            transition: background-color 0.3s ease;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .app-title { font-weight: 900; font-size: 1.4rem; letter-spacing: -0.8px; flex: 1; text-align: center; margin-left: 35px; }
+        .trademark { font-size: 0.6rem; vertical-align: top; margin-left: 2px; color: var(--text-muted); }
+        .mode-toggle { font-size: 1.5rem; cursor: pointer; padding: 5px; }
+
+        .main-content { padding: 15px; }
+
+        .section-header {
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin: 25px 0 12px;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border);
+            margin-bottom: 15px;
+        }
+
+        .drug-select {
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 700;
+            appearance: none;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-box {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .label-top { font-size: 0.7rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 5px; }
+        .info-value { font-size: 1.5rem; font-weight: 800; }
+        .info-unit { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stepper {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-step {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-step:active { transform: scale(0.95); opacity: 0.8; }
+
+        .val-display { font-size: 2rem; font-weight: 900; min-width: 40px; text-align: center; }
+
+        .segmented {
+            display: flex;
+            background: var(--surface);
+            padding: 4px;
+            border-radius: 14px;
+            gap: 4px;
+            margin-top: 10px;
+        }
+
+        .segment {
+            flex: 1;
+            padding: 12px 0;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 800;
+            border-radius: 11px;
+            color: var(--text-muted);
+            transition: 0.2s;
+        }
+
+        .segment.active {
+            background: var(--card);
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .result-card {
+            background: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 35px;
+            text-align: center;
+            margin-top: 25px;
+            box-shadow: 0 10px 25px rgba(0, 122, 255, 0.3);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .result-label { font-size: 0.75rem; font-weight: 900; text-transform: uppercase; opacity: 0.9; letter-spacing: 1px; }
+        .result-value { font-size: 3.5rem; font-weight: 900; margin: 8px 0; letter-spacing: -2px; }
+        .result-sub { font-size: 1.2rem; font-weight: 700; opacity: 0.9; }
+
+        .warning-box {
+            background: rgba(255, 59, 48, 0.2);
+            color: #ff3b30;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+            border: 1px solid rgba(255, 59, 48, 0.3);
+        }
+        
+        .dark-mode .warning-box { color: #ff453a; background: rgba(255, 69, 58, 0.2); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div style="width: 35px;"></div>
+        <div class="app-title">ResqCalc<span class="trademark">®</span></div>
+        <div class="mode-toggle" onclick="document.body.classList.toggle('dark-mode')">🌓</div>
+    </header>
+
+    <div class="main-content">
+        <div class="section-header">Léčivý přípravek</div>
+        <div class="card" style="padding: 12px;">
+            <select id="drug-select" class="drug-select" onchange="updateCalc()">
+                <option value="2" data-unit="mg" data-vol="10">Etomidate (2mg/ml)</option>
+                <option value="0.05" data-unit="mg" data-vol="10">Fentanyl (50µg/1ml)</option>
+                <option value="5" data-unit="mg" data-vol="1">Midazolam (5mg/1ml)</option>
+                <option value="5" data-unit="mg" data-vol="3">Midazolam (15mg/3ml)</option>
+                <option value="10" data-unit="mg" data-vol="2">Propofol 1% (10mg/ml)</option>
+                <option value="20" data-unit="mg" data-vol="5">Propofol 2% (20mg/ml)</option>
+                <option value="50" data-unit="mg" data-vol="10">Thiopental (500mg/10ml)</option>
+                <option value="10" data-unit="mg" data-vol="5">Rocuronium (10mg/ml)</option>
+                <option value="0.05" data-unit="mg" data-vol="5">Sufenta (250µg/5ml)</option>
+            </select>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-box">
+                <span class="label-top">Obsah ampule</span>
+                <div>
+                    <span id="amp-mg-val" class="info-value">--</span>
+                    <span id="amp-mg-unit" class="info-unit">mg</span>
+                </div>
+            </div>
+            <div class="info-box">
+                <span class="label-top">Objem ampule</span>
+                <div>
+                    <span id="amp-vol-val" class="info-value">--</span>
+                    <span class="info-unit">ml</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">Příprava</div>
+        <div class="card">
+            <div class="input-row">
+                <span style="font-weight: 800; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase;">Počet ampulí</span>
+                <div class="stepper">
+                    <button class="btn-step" onclick="step(-1)">−</button>
+                    <span id="val-amp" class="val-display">1</span>
+                    <button class="btn-step" onclick="step(1)">+</button>
+                </div>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+            
+            <span class="label-top" style="display: block; text-align: center; margin-bottom: 10px;">Cílový objem (stříkačka)</span>
+            <div class="segmented">
+                <div class="segment" onclick="setVol(this, 5)">5 ml</div>
+                <div class="segment" onclick="setVol(this, 10)">10 ml</div>
+                <div class="segment active" onclick="setVol(this, 20)">20 ml</div>
+                <div class="segment" onclick="setVol(this, 50)">50 ml</div>
+            </div>
+        </div>
+
+        <div id="result" class="result-card">
+            <div class="result-label">Výsledná koncentrace</div>
+            <div id="res-val" class="result-value">--</div>
+            <div id="res-sub" class="result-sub">--</div>
+        </div>
+
+        <div id="warn-box" class="warning-box">
+            ⚠️ Standardní koncentrace pro perfusor je 1 mg / 1 ml!
+        </div>
+    </div>
+
+<script>
+    let currentVol = 20; 
+    let currentAmp = 1;  
+
+    function step(delta) {
+        currentAmp = Math.max(1, currentAmp + delta);
+        document.getElementById('val-amp').innerText = currentAmp;
+        updateCalc();
+    }
+
+    function setVol(el, v) {
+        document.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+        el.classList.add('active');
+        currentVol = v;
+        updateCalc();
+    }
+
+    function updateCalc() {
+        const select = document.getElementById('drug-select');
+        const opt = select.options[select.selectedIndex];
+        
+        const mgPerMlOriginal = parseFloat(opt.value);
+        const volPerAmp = parseFloat(opt.dataset.vol);
+        const unit = opt.dataset.unit;
+
+        const mgInOneAmp = mgPerMlOriginal * volPerAmp;
+
+        // Zobrazení obsahu ampule s převodem na mikrogramy u slabých roztoků
+        if (mgInOneAmp < 1) {
+            document.getElementById('amp-mg-val').innerText = (mgInOneAmp * 1000).toFixed(0);
+            document.getElementById('amp-mg-unit').innerText = "µg";
+        } else {
+            document.getElementById('amp-mg-val').innerText = mgInOneAmp % 1 === 0 ? mgInOneAmp.toFixed(0) : mgInOneAmp.toFixed(1);
+            document.getElementById('amp-mg-unit').innerText = unit;
+        }
+        document.getElementById('amp-vol-val').innerText = volPerAmp;
+
+        const totalMg = mgInOneAmp * currentAmp;
+        const finalConc = totalMg / currentVol;
+
+        const resVal = document.getElementById('res-val');
+        const resSub = document.getElementById('res-sub');
+
+        // Formátování výsledku
+        if (finalConc < 0.05) {
+            resVal.innerText = (finalConc * 1000).toFixed(finalConc * 1000 % 1 === 0 ? 0 : 1);
+            resSub.innerText = `µg / 1 ml`;
+        } else {
+            resVal.innerText = finalConc % 1 === 0 ? finalConc : finalConc.toFixed(2).replace(/\.?0+$/, "");
+            resSub.innerText = `${unit} / 1 ml`;
+        }
+
+        // Speciální varování
+        const warnBox = document.getElementById('warn-box');
+        if (opt.text.includes("Midazolam") && finalConc !== 1 && currentVol === 50) {
+            warnBox.style.display = "block";
+        } else {
+            warnBox.style.display = "none";
+        }
+    }
+
+    updateCalc();
+</script>
+</body>
+</html>
