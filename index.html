@@ -7,9 +7,9 @@
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="ResqCalc®">
+    <meta name="apple-mobile-web-app-title" content="ResqCalc">
 
-        <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
 
     <style>
         :root {
@@ -67,7 +67,7 @@
             font-weight: 900;
             color: var(--primary);
             text-transform: uppercase;
-            margin: 25px 0 12px;
+            margin: 20px 0 10px;
             text-align: center;
             letter-spacing: 0.5px;
         }
@@ -115,60 +115,25 @@
         .info-value { font-size: 1.5rem; font-weight: 800; }
         .info-unit { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
 
-        .input-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .stepper {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
+        .stepper { display: flex; align-items: center; gap: 20px; }
         .btn-step {
-            width: 50px;
-            height: 50px;
-            border-radius: 15px;
-            border: none;
-            background: var(--primary);
-            color: white;
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 50px; height: 50px; border-radius: 15px; border: none;
+            background: var(--primary); color: white; font-size: 1.8rem;
+            font-weight: bold; display: flex; align-items: center; justify-content: center;
         }
-        
         .btn-step:active { transform: scale(0.95); opacity: 0.8; }
-
         .val-display { font-size: 2rem; font-weight: 900; min-width: 40px; text-align: center; }
 
         .segmented {
-            display: flex;
-            background: var(--surface);
-            padding: 4px;
-            border-radius: 14px;
-            gap: 4px;
-            margin-top: 10px;
+            display: flex; background: var(--surface); padding: 4px;
+            border-radius: 14px; gap: 4px; margin-top: 10px;
         }
-
         .segment {
-            flex: 1;
-            padding: 12px 0;
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: 800;
-            border-radius: 11px;
-            color: var(--text-muted);
-            transition: 0.2s;
+            flex: 1; padding: 12px 0; text-align: center; font-size: 0.85rem;
+            font-weight: 800; border-radius: 11px; color: var(--text-muted);
         }
-
         .segment.active {
-            background: var(--card);
-            color: var(--primary);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background: var(--card); color: var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .result-card {
@@ -179,27 +144,16 @@
             text-align: center;
             margin-top: 25px;
             box-shadow: 0 10px 25px rgba(0, 122, 255, 0.3);
-            border: 1px solid rgba(0,0,0,0.1);
         }
-
         .result-label { font-size: 0.75rem; font-weight: 900; text-transform: uppercase; opacity: 0.9; letter-spacing: 1px; }
         .result-value { font-size: 3.5rem; font-weight: 900; margin: 8px 0; letter-spacing: -2px; }
         .result-sub { font-size: 1.2rem; font-weight: 700; opacity: 0.9; }
 
         .warning-box {
-            background: rgba(255, 59, 48, 0.2);
-            color: #ff3b30;
-            padding: 15px;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            margin-top: 20px;
-            display: none;
-            text-align: center;
-            border: 1px solid rgba(255, 59, 48, 0.3);
+            background: rgba(255, 59, 48, 0.2); color: #ff3b30;
+            padding: 15px; border-radius: 15px; font-size: 0.85rem;
+            font-weight: 800; margin-top: 20px; display: none; text-align: center;
         }
-        
-        .dark-mode .warning-box { color: #ff453a; background: rgba(255, 69, 58, 0.2); }
     </style>
 </head>
 <body>
@@ -214,49 +168,39 @@
         <div class="section-header">Léčivý přípravek</div>
         <div class="card" style="padding: 12px;">
             <select id="drug-select" class="drug-select" onchange="updateCalc()">
-                <option value="2" data-unit="mg" data-vol="10">Etomidate (2mg/ml)</option>
-                <option value="0.05" data-unit="mg" data-vol="10">Fentanyl (50µg/1ml)</option>
-                <option value="5" data-unit="mg" data-vol="1">Midazolam (5mg/1ml)</option>
-                <option value="5" data-unit="mg" data-vol="3">Midazolam (15mg/3ml)</option>
-                <option value="10" data-unit="mg" data-vol="2">Propofol 1% (10mg/ml)</option>
-                <option value="20" data-unit="mg" data-vol="5">Propofol 2% (20mg/ml)</option>
-                <option value="50" data-unit="mg" data-vol="10">Thiopental (500mg/10ml)</option>
-                <option value="10" data-unit="mg" data-vol="5">Rocuronium (10mg/ml)</option>
-                <option value="0.05" data-unit="mg" data-vol="5">Sufenta (250µg/5ml)</option>
+                <option value="50" data-unit="mg" data-vol="10">Calypsol (50mg/1ml)</option>
+                <option value="0.05" data-unit="mg" data-vol="10">Fentanyl (50mcg/1ml)</option>
+                <option value="2" data-unit="mg" data-vol="10">Hypnomidate (2mg/1ml)</option>
+                <option value="20" data-unit="mg" data-vol="50">Propofol 2% (20mg/1ml)</option>
+                <option value="10" data-unit="mg" data-vol="5">Rocuronium (10mg/1ml)</option>
+                <option value="0.05" data-unit="mg" data-vol="5">Sufentanil (250mcg/5ml)</option>
+                <option value="50" data-unit="mg" data-vol="2">Suxamethonium (50mg/1ml)</option>
             </select>
         </div>
 
         <div class="info-grid">
             <div class="info-box">
                 <span class="label-top">Obsah ampule</span>
-                <div>
-                    <span id="amp-mg-val" class="info-value">--</span>
-                    <span id="amp-mg-unit" class="info-unit">mg</span>
-                </div>
+                <div><span id="amp-mg-val" class="info-value">--</span><span id="amp-mg-unit" class="info-unit">mg</span></div>
             </div>
             <div class="info-box">
                 <span class="label-top">Objem ampule</span>
-                <div>
-                    <span id="amp-vol-val" class="info-value">--</span>
-                    <span class="info-unit">ml</span>
-                </div>
+                <div><span id="amp-vol-val" class="info-value">--</span><span class="info-unit">ml</span></div>
             </div>
         </div>
 
         <div class="section-header">Příprava</div>
         <div class="card">
-            <div class="input-row">
-                <span style="font-weight: 800; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase;">Počet ampulí</span>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-weight:800; font-size:0.9rem; color:var(--text-muted); text-transform:uppercase;">Počet ampulí</span>
                 <div class="stepper">
                     <button class="btn-step" onclick="step(-1)">−</button>
                     <span id="val-amp" class="val-display">1</span>
                     <button class="btn-step" onclick="step(1)">+</button>
                 </div>
             </div>
-            
             <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
-            
-            <span class="label-top" style="display: block; text-align: center; margin-bottom: 10px;">Cílový objem (stříkačka)</span>
+            <span class="label-top" style="display:block; text-align:center; margin-bottom:10px;">Cílový objem (stříkačka)</span>
             <div class="segmented">
                 <div class="segment" onclick="setVol(this, 5)">5 ml</div>
                 <div class="segment" onclick="setVol(this, 10)">10 ml</div>
@@ -279,6 +223,14 @@
 <script>
     let currentVol = 20; 
     let currentAmp = 1;  
+
+    function sortDrugs() {
+        const select = document.getElementById('drug-select');
+        const options = Array.from(select.options);
+        options.sort((a, b) => a.text.localeCompare(b.text));
+        select.innerHTML = "";
+        options.forEach(opt => select.add(opt));
+    }
 
     function step(delta) {
         currentAmp = Math.max(1, currentAmp + delta);
@@ -303,7 +255,6 @@
 
         const mgInOneAmp = mgPerMlOriginal * volPerAmp;
 
-        // Zobrazení obsahu ampule s převodem na mikrogramy u slabých roztoků
         if (mgInOneAmp < 1) {
             document.getElementById('amp-mg-val').innerText = (mgInOneAmp * 1000).toFixed(0);
             document.getElementById('amp-mg-unit').innerText = "µg";
@@ -319,7 +270,6 @@
         const resVal = document.getElementById('res-val');
         const resSub = document.getElementById('res-sub');
 
-        // Formátování výsledku
         if (finalConc < 0.05) {
             resVal.innerText = (finalConc * 1000).toFixed(finalConc * 1000 % 1 === 0 ? 0 : 1);
             resSub.innerText = `µg / 1 ml`;
@@ -328,7 +278,7 @@
             resSub.innerText = `${unit} / 1 ml`;
         }
 
-        // Speciální varování
+        // Původní varování pro Midazolam v 50ml stříkačce
         const warnBox = document.getElementById('warn-box');
         if (opt.text.includes("Midazolam") && finalConc !== 1 && currentVol === 50) {
             warnBox.style.display = "block";
@@ -337,7 +287,10 @@
         }
     }
 
-    updateCalc();
+    window.addEventListener('DOMContentLoaded', () => {
+        sortDrugs();
+        updateCalc();
+    });
 </script>
 </body>
 </html>
